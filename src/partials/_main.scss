@@ -1,0 +1,21 @@
+.main_content{
+    @include mainContent;
+
+}
+
+.main_content li {
+    @include mainContLi;
+}
+
+.main_content li img {
+    @include img;
+}
+
+li h3,h4,span{
+    @include span;
+}
+
+li span {
+    font-size: 15px;
+
+}
