@@ -1,27 +1,19 @@
 <?php
-include('database.php');
-header('Content-Type:application/json');
-echo json_encode($database);
+include 'database.php';
+$db = $database;
 
-// databaseRequest($database);
-//
-// function databaseRequest($database){
-//     if (empty($_GET['author'])) {
-//         header('Content-Type:application/json');
-//         echo json_encode($database);
-//
-//     } else{
-//         $database2 = [];
-//         foreach ($database as $key) {
-//             if (in_array($_GET['author'], $key)) {
-//                 array_push($database2);
-//                 header('Content-Type:application/json');
-//                 echo json_encode($database2);
-//             }
-//         }
-//     }
-// }
+if (!empty($_GET['author'])) {
+    $db2 = [];
+    $searchAuthor = $_GET['author'];
+    foreach ($database as $cd) {
+        if ($searchAuthor == $cd['author']) {
+            $db2[] = $cd;
+            }
+        }
+  $db = $db2;
+        }
 
+        header('Content-Type:application/json');
+        echo json_encode($db);
 
-
- ?>
+?>

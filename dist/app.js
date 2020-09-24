@@ -10980,17 +10980,41 @@ return jQuery;
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 $(document).ready(function () {
+  getData();
+  $(document).on('click', '#select-id', function () {
+    var inputT = $(this).val();
+    console.log(inputT);
+    $.ajax({
+      url: 'http://localhost:8888/dischi/server.php',
+      method: 'GET',
+      data: {
+        author: inputT
+      },
+      success: function success(risposta) {
+        $('.main_content').html('');
+        printData(risposta);
+      },
+      error: function error() {
+        alert('ERRORE');
+      }
+    });
+  });
+}); // fine document
+// *******FUNCTION*********
+
+function getData() {
   $.ajax({
     url: 'http://localhost:8888/dischi/server.php',
     method: 'GET',
     success: function success(risposta) {
       printData(risposta);
+      printSelect(risposta);
     },
     error: function error() {
-      alert('ERRORE');
+      alert('ERROR');
     }
   });
-});
+}
 
 function printData(data) {
   var source = $("#entry-template").html();
@@ -10998,13 +11022,30 @@ function printData(data) {
 
   for (var i = 0; i < data.length; i++) {
     var context = {
-      poster: data[i].poster,
       title: data[i].title,
       author: data[i].author,
-      year: data[i].year
+      year: data[i].year,
+      poster: data[i].poster
     };
     var html = template(context);
     $('.main_content').append(html);
+  }
+}
+
+function printSelect(data) {
+  var source = $("#option-template").html();
+  var template = Handlebars.compile(source);
+  var arrayAuthor = [];
+
+  for (var i = 0; i < data.length; i++) {
+    if (!arrayAuthor.includes(data[i].author)) {
+      arrayAuthor.push(data[i].author);
+      var context = {
+        author: data[i].author
+      };
+      var html = template(context);
+      $('#select-id').append(html);
+    }
   }
 }
 
